@@ -1,0 +1,5 @@
+.vscode/
+mandelbrot-glsl
+include/glad/
+include/KHR/
+src/glad/
