@@ -1,10 +1,16 @@
 #include <iostream>
 #include <math.h>
-#include <glad/gl.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "shaders.h"
 
 #define MAX_SHADER_LENGTH 1024 * 10
+
+void Shaders::uniform_double(const std::string &uniform_name, double f) const
+{
+    int unif_loc = glGetUniformLocation(id, uniform_name.c_str());
+    glUniform1d(unif_loc, f);
+}
 
 void Shaders::uniform_float(const std::string &uniform_name, float f) const
 {

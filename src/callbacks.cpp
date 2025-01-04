@@ -9,7 +9,7 @@ void error_callback(int err, const char *msg)
     std::cout << "Error " << err << ": " << msg << std::endl;
 }
 
-void modify_by_action(int action, float value, float &to_modify)
+void modify_by_action(int action, double value, double &to_modify)
 {
     if (action == GLFW_PRESS)   to_modify = value;
     if (action == GLFW_RELEASE) to_modify = 0;
@@ -17,7 +17,7 @@ void modify_by_action(int action, float value, float &to_modify)
 }
 
 bool is_wireframe = false;
-float pan_x = 0.f, pan_y = 0.f, zoom = 0.f;
+double pan_x = 0.f, pan_y = 0.f, zoom = 0.f;
 
 bool mouse_entered = false;
 double last_mouse_x, last_mouse_y;

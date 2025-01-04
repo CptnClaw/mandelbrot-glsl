@@ -18,6 +18,7 @@ class Shaders
 
         // Send uniform data to shaders
         void uniform_float(const std::string &uniform_name, float f) const;
+        void uniform_double(const std::string &uniform_name, double f) const;
         void uniform_modulation(const std::string &uniform_name) const;
         void uniform_int(const std::string &uniform_name, int i) const;
 

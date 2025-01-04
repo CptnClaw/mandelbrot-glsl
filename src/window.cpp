@@ -1,5 +1,5 @@
 #include <iostream>
-#include <glad/gl.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "window.h"
 #include "callbacks.h"
@@ -17,8 +17,8 @@ Window::Window(uint width, uint height, bool &success)
     is_initialized = true;
 
     // Create a windowed mode window and its OpenGL context 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     handle = glfwCreateWindow(width, height, "playgroundgl", nullptr, nullptr);
     if (!handle)
@@ -30,7 +30,7 @@ Window::Window(uint width, uint height, bool &success)
 
     // Make the window's context current 
     glfwMakeContextCurrent(handle);
-    if (!gladLoadGL(glfwGetProcAddress))
+    if (!gladLoadGL())
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         success = false;
@@ -46,7 +46,8 @@ Window::Window(uint width, uint height, bool &success)
     glfwSetFramebufferSizeCallback(handle, fb_sz_callback);
     glfwSetCursorPosCallback(handle, mouse_callback);
     glfwSetScrollCallback(handle, scroll_callback);
-    
+
+    std::cout << "Using OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
     success = true;
 }
 

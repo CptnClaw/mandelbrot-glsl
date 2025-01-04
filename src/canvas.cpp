@@ -1,5 +1,6 @@
 #include <iostream>
-#include <glad/gl.h>
+#include <iostream>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "canvas.h"
 
@@ -53,30 +54,34 @@ Canvas::~Canvas()
 void Canvas::draw(const Shaders &program) const
 {
     // Calculate bounding box
-    float left = center_x - width / 2.0;
-    float right = left + width;
-    float height = width / aspect_ratio;
-    float down = center_y - height / 2.0;
-    float up = down + height;
+    double left = center_x - width / 2.0;
+    double right = left + width;
+    double height = width / aspect_ratio;
+    double down = center_y - height / 2.0;
+    double up = down + height;
 
     // Send bounding box to fragment shader as uniforms
-    program.uniform_float("left", left);
-    program.uniform_float("right", right);
-    program.uniform_float("down", down);
-    program.uniform_float("up", up);
+    program.uniform_double("left", left);
+    program.uniform_double("right", right);
+    program.uniform_double("down", down);
+    program.uniform_double("up", up);
 
     // OpenGL draw calls
     glBindVertexArray(array_obj);
     glDrawElements(GL_TRIANGLES, num_vertices, GL_UNSIGNED_INT, 0);
 }
 
-void Canvas::pan(float x_dir, float y_dir)
+void Canvas::pan(double x_dir, double y_dir)
 {
     center_x = center_x + x_dir * PAN_SPEED * width;
     center_y = center_y + y_dir * PAN_SPEED * width;
 }
 
-void Canvas::zoom(float direction) 
+void Canvas::zoom(double direction) 
 {
     width = width * ZOOM_SPEED * (1+direction);
+    if (direction != 0)
+    {
+        std::cout << "Canvas width: " << width << std::endl;
+    }
 }

@@ -1,3 +1,5 @@
+#include <iostream>
+#include <glad/glad.h>
 #include "shaders.h"
 #include "canvas.h"
 #include "clock.h"
@@ -6,7 +8,15 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
-extern float pan_x, pan_y, zoom;
+extern double pan_x, pan_y, zoom;
+
+void query_precision(GLenum precisionType)
+{
+    int ret_range[2];
+    int ret_precision;
+    glGetShaderPrecisionFormat(GL_FRAGMENT_SHADER, precisionType, ret_range, &ret_precision);
+    std::cout << "min: " << ret_range[0] << ", max: " << ret_range[1] << ", precision: " << ret_precision << std::endl;
+}
 
 int main()
 {
@@ -17,6 +27,12 @@ int main()
     {
         return -1;
     }
+    
+    // Query variables precision in fragment shader
+    query_precision(GL_MEDIUM_FLOAT);
+    query_precision(GL_HIGH_FLOAT);
+    query_precision(GL_MEDIUM_INT);
+    query_precision(GL_HIGH_INT);
 
     // Build shaders programs
     bool shader_success;
@@ -28,7 +44,7 @@ int main()
     program.use();
 
     // Construct canvas to draw on
-    Canvas canvas((float)WINDOW_WIDTH / (float)WINDOW_HEIGHT);
+    Canvas canvas((double)WINDOW_WIDTH / (double)WINDOW_HEIGHT);
 
     // Loop until the user closes the window
     Clock clock;

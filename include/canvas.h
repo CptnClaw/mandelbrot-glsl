@@ -15,14 +15,14 @@ public:
     
     // Pan and zoom
     // Arguments should be -1.f, 0.f, or 1.f
-    void pan(float x_dir, float y_dir);
-    void zoom(float direction);
+    void pan(double x_dir, double y_dir);
+    void zoom(double direction);
 
 private:
     // Canvas size and location
-    float center_x, center_y;
-    float width;
-    float aspect_ratio;
+    double center_x, center_y;
+    double width;
+    double aspect_ratio;
 
     // OpenGL stuff
     uint vbuf; // Index of vertices buffer on GPU
