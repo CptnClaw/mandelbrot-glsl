@@ -8,6 +8,7 @@ Window::Window(uint width, uint height, bool &success)
 {
     // Initialize the library 
     glfwSetErrorCallback(error_callback);
+    glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11); // For renderdoc, which prefers X11 over wayland
     if (!glfwInit())
     {
         std::cout << "Failed to initialize GLFW" << std::endl;
@@ -39,7 +40,6 @@ Window::Window(uint width, uint height, bool &success)
     glViewport(0, 0, width, height);
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
-    glfwSetInputMode(handle, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
     // Set callbacks
     glfwSetKeyCallback(handle, key_callback);

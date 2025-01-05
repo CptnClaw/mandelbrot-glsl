@@ -10,9 +10,9 @@
 Canvas::Canvas(float aspect_ratio) : aspect_ratio(aspect_ratio)
 {
     // Initial position
-    center_x = 0.0;
+    center_x = -0.5;
     center_y = 0.0;
-    width = 4.0;
+    width = 3.0;
 
     // Define triangles
     float vertices[] = {
@@ -80,8 +80,4 @@ void Canvas::pan(double x_dir, double y_dir)
 void Canvas::zoom(double direction) 
 {
     width = width * ZOOM_SPEED * (1+direction);
-    if (direction != 0)
-    {
-        std::cout << "Canvas width: " << width << std::endl;
-    }
 }

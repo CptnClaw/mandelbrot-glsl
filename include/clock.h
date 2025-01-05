@@ -13,6 +13,8 @@ class Clock
 
     private:
         float prev_time;
+        float prev_fps_print;
+        int frame_counter;
 };
 
 #endif // CLOCK_H_
