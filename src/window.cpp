@@ -8,7 +8,11 @@ Window::Window(uint width, uint height, bool &success)
 {
     // Initialize the library 
     glfwSetErrorCallback(error_callback);
-    glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11); // For renderdoc, which prefers X11 over wayland
+    if (glfwPlatformSupported(GLFW_PLATFORM_X11))
+    {
+        // Renderdoc does not like wayland, so run on x11 instead
+        glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11); 
+    }
     if (!glfwInit())
     {
         std::cout << "Failed to initialize GLFW" << std::endl;
