@@ -24,7 +24,7 @@ int main()
     
     // Build shaders programs
     bool shader_success;
-    Shaders program("shaders/vertex_passthrough.glsl", "shaders/fragment_mandelbrot.glsl", shader_success); 
+    Shaders program("shaders/vertex_simple.glsl", "shaders/fragment_mandelbrot.glsl", shader_success); 
     if (!shader_success)
     {
         return -1;

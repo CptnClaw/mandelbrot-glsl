@@ -76,41 +76,72 @@ uint compile_shader(std::string shader_path, GLenum shader_type)
     return shader;
 }
 
-Shaders::Shaders(const std::string &vertex_shader_path, const std::string &fragment_shader_path, bool &success)
+int build(uint *compiled_shaders, int num_shaders, bool &success)
 {
-    // Compile vertex shader
-    uint vertex_shader = compile_shader(vertex_shader_path, GL_VERTEX_SHADER);
-    if (0 == vertex_shader)
-    {
-        success = false;
-        return;
-    }
-
-    // Compile fragment shader
-    uint fragment_shader = compile_shader(fragment_shader_path, GL_FRAGMENT_SHADER);
-    if (0 == fragment_shader)
-    {
-        success = false;
-        return;
-    }
-
-    // Link shader program
+    // Create program
     int linking_success;
     char compilation_errs[512];
-    id = glCreateProgram();
-    glAttachShader(id, vertex_shader);
-    glAttachShader(id, fragment_shader);
+    int id = glCreateProgram();
+    
+    // Attach shaders
+    for (int i=0; i<num_shaders; i++)
+    {
+        glAttachShader(id, compiled_shaders[i]);
+    }
+
+    // Link and check for errors
     glLinkProgram(id);
     glGetProgramiv(id, GL_LINK_STATUS, &linking_success);
+    success = true;
     if (!linking_success)
     {
         glGetProgramInfoLog(id, 512, nullptr, compilation_errs);
         std::cout << "Error linking shader program: " << std::endl;
         std::cout << compilation_errs << std::endl << std::endl;
         success = false;
+    }
+    return id;
+}
+
+Shaders::Shaders(const std::string &vertex_shader_path, const std::string &fragment_shader_path, bool &success)
+{
+    // Compile vertex and fragment shaders
+    uint vertex_shader = compile_shader(vertex_shader_path, GL_VERTEX_SHADER);
+    uint fragment_shader = compile_shader(fragment_shader_path, GL_FRAGMENT_SHADER);
+    if (0 == vertex_shader || 0 == fragment_shader)
+    {
+        success = false;
         return;
     }
+    
+    // Link program
+    uint compiled[] = {vertex_shader, fragment_shader};
+    id = build(compiled, 2, success);
+
+    // Delete unnecessary resources
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
-    success = true;
+}
+
+Shaders::Shaders(const std::string &vertex_shader_path, const std::string &geometry_shader_path,
+                 const std::string &fragment_shader_path, bool &success)
+{
+    // Compile vertex, geometry, and fragment shaders
+    uint vertex_shader = compile_shader(vertex_shader_path, GL_VERTEX_SHADER);
+    uint geometry_shader = compile_shader(geometry_shader_path, GL_GEOMETRY_SHADER);
+    uint fragment_shader = compile_shader(fragment_shader_path, GL_FRAGMENT_SHADER);
+    if (0 == vertex_shader || 0 == geometry_shader || 0 == fragment_shader)
+    {
+        success = false;
+        return;
+    }
+    
+    // Link program
+    uint compiled[] = {vertex_shader, geometry_shader, fragment_shader};
+    id = build(compiled, 3, success);
+
+    // Delete unnecessary resources
+    glDeleteShader(vertex_shader);
+    glDeleteShader(geometry_shader);
+    glDeleteShader(fragment_shader);
 }

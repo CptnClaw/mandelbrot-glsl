@@ -1,5 +1,6 @@
 .vscode/
 mandelbrot
+logistic
 include/glad/
 include/KHR/
 src/glad/

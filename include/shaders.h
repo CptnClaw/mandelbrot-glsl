@@ -8,7 +8,13 @@ class Shaders
     public:
         // Reads, compiles and links shader program
         // Make sure to check last argument for any errors
-        Shaders(const std::string &vertex_shader_path, const std::string &fragment_shader_path, bool &success);
+        Shaders(const std::string &vertex_shader_path, 
+                const std::string &fragment_shader_path, 
+                bool &success);
+        Shaders(const std::string &vertex_shader_path, 
+                const std::string &geometry_shader_path, 
+                const std::string &fragment_shader_path, 
+                bool &success);
 
         // Frees resources
         ~Shaders();
