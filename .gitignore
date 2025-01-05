@@ -1,5 +1,5 @@
 .vscode/
-mandelbrot-glsl
+mandelbrot
 include/glad/
 include/KHR/
 src/glad/

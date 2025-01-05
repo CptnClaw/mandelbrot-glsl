@@ -9,6 +9,8 @@
 #define WINDOW_HEIGHT 900
 
 extern double pan_x, pan_y, zoom;
+extern float scroll;
+extern int keynum;
 
 int main()
 {
@@ -22,7 +24,7 @@ int main()
     
     // Build shaders programs
     bool shader_success;
-    Shaders program("shaders/vertex.glsl", "shaders/fragment.glsl", shader_success);
+    Shaders program("shaders/vertex_passthrough.glsl", "shaders/fragment_mandelbrot.glsl", shader_success); 
     if (!shader_success)
     {
         return -1;
@@ -42,6 +44,8 @@ int main()
         // Update canvas
         canvas.pan(pan_x * delta_time, pan_y * delta_time);
         canvas.zoom(zoom * delta_time);
+        program.uniform_float("color_phase", scroll);
+        program.uniform_int("max_depth", 1 << keynum); // pow(2,keynum)
 
         // Draw on canvas
         canvas.draw(program);

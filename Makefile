@@ -1,7 +1,8 @@
 CC=clang++
 CSTD=-std=c++17
 WARN=-Wall -Wextra -Wpedantic -Werror
-SOURCE=src/*.cpp src/*/*.cpp
+SOURCE=src/*.cpp src/glad/*.cpp
+MANDELBROT=src/mandelbrot/*.cpp
 INCLUDE=-Iinclude 
 LINKGL=-lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl 
 OUTPUT=mandelbrot-glsl
@@ -10,9 +11,10 @@ RELEASE=-g -O3
 
 COMMON=$(CC) $(CSTD) $(WARN) $(SOURCE) $(INCLUDE) $(LINKGL)
 
-build: 
-	$(COMMON) $(RELEASE) -o $(OUTPUT)
+all:  mandelbrot
+mandelbrot: $(SOURCE) $(MANDELBROT)
+	$(COMMON) $(MANDELBROT) $(RELEASE) -o mandelbrot
 debug: 
-	$(COMMON) $(DEBUG) -o $(OUTPUT)
+	$(COMMON) $(MANDELBROT) $(DEBUG) -o mandelbrot
 clean:
-	rm -rf $(OUTPUT)
+	rm -rf mandelbrot

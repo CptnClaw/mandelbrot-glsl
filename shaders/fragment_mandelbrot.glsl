@@ -1,14 +1,11 @@
 #version 460 core
 
-// precision highp float;
-// precision highp int;
-
 uniform double left, right, up, down;
+uniform float color_phase;
+uniform int max_depth;
 
 in vec2 frag_position;
 out vec4 fragColor;
-
-#define MAX_DEPTH 256
 
 
 vec4 HSL2RGB(float h, float s, float l) 
@@ -44,7 +41,7 @@ double convert_range(double value, double old_start, double old_end, double new_
 }
 
 // Returns how many iterations it took seed to escape the polynomial iteration
-// (or MAX_DEPTH if escape was never detected)
+// (or max_depth if escape was never detected)
 // The iteration count is "corrected" to enable smooth coloring, see: http://linas.org/art-gallery/escape/smooth.html
 float mandelbrot(double seed_real, double seed_imaginary)
 {
@@ -52,7 +49,7 @@ float mandelbrot(double seed_real, double seed_imaginary)
     double val_real = 0;
     double val_imaginary = 0;
 
-    for (int i = 0; i < MAX_DEPTH; i++)
+    for (int i = 0; i < max_depth; i++)
     {
         // Square the real and imaginary parts
         double val_real2 = val_real * val_real;
@@ -70,7 +67,7 @@ float mandelbrot(double seed_real, double seed_imaginary)
         val_real = seed_real + val_real2 - val_imaginary2;
         val_imaginary = seed_imaginary + cross + cross;
     }
-    return float(MAX_DEPTH);
+    return float(max_depth);
 }
 
 void main()
@@ -80,9 +77,9 @@ void main()
     float iterations = mandelbrot(seed_real, seed_imaginary);
     
     fragColor = vec4(0.0, 0.0, 0.0, 1.0);
-    if (iterations < float(MAX_DEPTH))
+    if (iterations < float(max_depth))
     {
-        float hue = mod(iterations / float(MAX_DEPTH) * 1.1, 1.0); // Wrap hue around 0-1 range
+        float hue = mod(color_phase + iterations / float(max_depth), 1.0);
         float saturation = 0.9;
         float lightness = 0.5;
         fragColor = HSL2RGB(hue, saturation, lightness);

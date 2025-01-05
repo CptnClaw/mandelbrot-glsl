@@ -16,13 +16,14 @@ void modify_by_action(int action, double value, double &to_modify)
     // else do nothing
 }
 
-bool is_wireframe = false;
 double pan_x = 0.f, pan_y = 0.f, zoom = 0.f;
+float scroll = 0.f;
+int keynum = 5;
 
 bool mouse_entered = false;
 double last_mouse_x, last_mouse_y;
 float mouse_sensitivity = .005f;
-float scroll_sensitivity = .005f;
+float scroll_sensitivity = .01f;
 
 void key_callback(GLFWwindow *window, int key, [[maybe_unused]] int scancode, [[maybe_unused]] int action, [[maybe_unused]] int mods)
 {
@@ -34,13 +35,31 @@ void key_callback(GLFWwindow *window, int key, [[maybe_unused]] int scancode, [[
         glfwSetWindowShouldClose(window, GLFW_TRUE);
         break;
     case GLFW_KEY_1:
-        // Toggle wireframe
-        if (action == GLFW_PRESS)
-        {
-            if (is_wireframe)   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            else                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            is_wireframe = !is_wireframe;
-        }
+        keynum = 1;
+        break;
+    case GLFW_KEY_2:
+        keynum = 2;
+        break;
+    case GLFW_KEY_3:
+        keynum = 3;
+        break;
+    case GLFW_KEY_4:
+        keynum = 4;
+        break;
+    case GLFW_KEY_5:
+        keynum = 5;
+        break;
+    case GLFW_KEY_6:
+        keynum = 6;
+        break;
+    case GLFW_KEY_7:
+        keynum = 7;
+        break;
+    case GLFW_KEY_8:
+        keynum = 8;
+        break;
+    case GLFW_KEY_9:
+        keynum = 9;
         break;
     case GLFW_KEY_W:
         modify_by_action(action, 1.f, pan_y);
@@ -88,5 +107,5 @@ void mouse_callback([[maybe_unused]] GLFWwindow *window, double x, double y)
 
 void scroll_callback([[maybe_unused]] GLFWwindow *window, [[maybe_unused]] double xoffset, double yoffset)
 {
-    zoom -= yoffset * scroll_sensitivity;
+    scroll -= yoffset * scroll_sensitivity;
 }
