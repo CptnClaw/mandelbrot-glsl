@@ -8,7 +8,7 @@ uniform int iterations_after;
 
 layout (points) in;
 // layout (line_strip, max_vertices=200) out;
-layout (points, max_vertices=200) out;
+layout (points, max_vertices=250) out;
 
 float convert_range(float value, float old_start, float old_end, float new_start, float new_end)
 {
