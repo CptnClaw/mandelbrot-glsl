@@ -41,6 +41,7 @@ int main()
     Clock clock;
     float range_center = 1.f;
     float width = 6.f;
+    keynum = 1;
     while (window.next_frame_ready())
     {
         // Keep time since last frame 
@@ -50,11 +51,15 @@ int main()
         width *= ((zoom * delta_time) + 1);
 
         // Draw points
+        float noise = (float)rand() / (float)(RAND_MAX);
+        noise /= 100.f;
         program.uniform_float("range_start", range_center - (width / 2.f));
         program.uniform_float("range_end", range_center + (width / 2.f));
-        program.uniform_float("seed", .2f);
+        program.uniform_float("seed", .2f + noise);
         program.uniform_int("iterations_before", 300);
         program.uniform_int("iterations_after", 250);
+        program.uniform_int("colormode", keynum);
+        program.uniform_int("colorphase", scroll);
         pts.draw(program);
     }
 

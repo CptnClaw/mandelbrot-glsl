@@ -10,6 +10,8 @@ layout (points) in;
 // layout (line_strip, max_vertices=200) out;
 layout (points, max_vertices=250) out;
 
+out float derivative;
+
 float convert_range(float value, float old_start, float old_end, float new_start, float new_end)
 {
     // Start in range [old_start, old_end]
@@ -40,11 +42,14 @@ void main()
        val = logistic_map(r, val); 
     }
     
+    float prev_val = val;
     for (int i=0; i<iterations_after; i++)
     {
        val = logistic_map(r, val); 
        gl_Position = gl_in[0].gl_Position + vec4(0.0, val, 0.0, 0.0);
+       derivative = abs(prev_val - val);
        EmitVertex();
        EndPrimitive();
+       prev_val = val;
     }
 }
